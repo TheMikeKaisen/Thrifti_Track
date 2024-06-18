@@ -4,7 +4,7 @@ import { transactions } from "../dumyData/data.js"
 
 const transactionResolver = {
     Query: {
-        transactions: async (_, _, context) => {
+        transactions: async (parent, _, context) => {
             try {
                 const autherizedUser = await context.getUser()
                 if (!autherizedUser) {
@@ -56,18 +56,19 @@ const transactionResolver = {
                 console.error("Error while updating a transaction: ", err);
                 throw new Error("Error updating Transaction");
             }
-        }
-    },
-    deleteTransaction: async (_, { transactionId }) => {
-        try {
-            const deletedTransaction = await Transaction.findByIdAndDelete(transactionId)
-            console.log("Transaction Deleted")
-            return deletedTransaction
-        } catch (error) {
-            console.error("Error while deleting a transaction: ", err);
-            throw new Error("Error deleting Transaction");
-        }
-    },
+        },
+
+        deleteTransaction: async (_, { transactionId }) => {
+            try {
+                const deletedTransaction = await Transaction.findByIdAndDelete(transactionId)
+                console.log("Transaction Deleted")
+                return deletedTransaction
+            } catch (error) {
+                console.error("Error while deleting a transaction: ", err);
+                throw new Error("Error deleting Transaction");
+            }
+        },
+    }
 }
 
 
